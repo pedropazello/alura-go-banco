@@ -1,21 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-type ContaCorrente struct {
-	titular       string
-	numeroAgencia int
-	numeroConta   int
-	saldo         float64
-}
+	"github.com/pedropazello/alura-go-banco/contas"
+)
 
 func main() {
-	contaDoGuilherme := ContaCorrente{titular: "Guilherme", numeroAgencia: 589, numeroConta: 12345, saldo: 125.5}
+	contaDoGuilherme := contas.ContaCorrente{Titular: "Guilherme", NumeroAgencia: 589, NumeroConta: 12345, Saldo: 125.5}
 	fmt.Println(contaDoGuilherme)
 
-	contaDaCris := new(ContaCorrente)
-	contaDaCris.titular = "Cris"
-	contaDaCris.saldo = 500
+	contaDaCris := contas.ContaCorrente{}
+	contaDaCris.Titular = "Cris"
+	contaDaCris.Saldo = 500
 
-	fmt.Println(*contaDaCris)
+	fmt.Println(contaDaCris)
+
+	msg := contaDaCris.Sacar(100)
+
+	fmt.Println(msg)
+	fmt.Println(contaDaCris)
+
+	msg2, saldo := contaDaCris.Depositar(100)
+
+	fmt.Println(saldo)
+	fmt.Println(msg2)
+	fmt.Println(contaDaCris)
+
+	contaDaCris.Transferir(100, &contaDoGuilherme)
 }
