@@ -3,16 +3,31 @@ package main
 import (
 	"fmt"
 
+	"github.com/pedropazello/alura-go-banco/clientes"
 	"github.com/pedropazello/alura-go-banco/contas"
 )
 
 func main() {
-	contaDoGuilherme := contas.ContaCorrente{Titular: "Guilherme", NumeroAgencia: 589, NumeroConta: 12345, Saldo: 125.5}
+	titularGuilherme := clientes.Titular{}
+	titularGuilherme.Nome = "Guilherme"
+	titularGuilherme.CPF = "123456"
+	titularGuilherme.Profissao = "Tecnico de eletronica"
+
+	contaDoGuilherme := contas.ContaCorrente{Titular: titularGuilherme, NumeroAgencia: 589, NumeroConta: 12345}
+	contaDoGuilherme.Depositar(500)
+
+	PagarBoleto(&contaDoGuilherme, 500)
+
 	fmt.Println(contaDoGuilherme)
 
-	contaDaCris := contas.ContaCorrente{}
-	contaDaCris.Titular = "Cris"
-	contaDaCris.Saldo = 500
+	titular := clientes.Titular{}
+	titular.Nome = "Cris"
+	titular.CPF = "123456"
+	titular.Profissao = "Tecnico de eletronica"
+
+	contaDaCris := contas.ContaPoupanca{}
+	contaDaCris.Titular = titular
+	contaDaCris.Depositar(500)
 
 	fmt.Println(contaDaCris)
 
@@ -28,4 +43,12 @@ func main() {
 	fmt.Println(contaDaCris)
 
 	contaDaCris.Transferir(100, &contaDoGuilherme)
+}
+
+func PagarBoleto(conta verificarConta, valorDoBoleto float64) {
+	conta.Sacar(valorDoBoleto)
+}
+
+type verificarConta interface {
+	Sacar(valor float64) string
 }
